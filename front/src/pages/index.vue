@@ -1,7 +1,7 @@
 <script setup lang="ts">
-
+    import Grille from '../components/Grille.vue';
 </script>
 
 <template>
-    <h1>Hello</h1>
+    <Grille :id="1235612" player="Dark" />
 </template>
