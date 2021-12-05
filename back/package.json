@@ -1,0 +1,20 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node dist/back/src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "socket.io": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13"
+  }
+}
