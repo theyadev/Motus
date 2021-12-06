@@ -2,7 +2,7 @@ import { readFileSync } from "fs"
 import normalize from '../../../functions/normalize';
 import path from 'path';
 
-function readWords() {
+function readWords() : string[] {
     const res = readFileSync(getWordsPath(), {
         encoding: "utf-8"
     })
@@ -15,7 +15,7 @@ function getWordsPath() {
 }
 
 export default function getWords() {
-    const words = readWords() as string[]
+    const words = readWords()
 
     return words.map(word => {
         return normalize(word)
