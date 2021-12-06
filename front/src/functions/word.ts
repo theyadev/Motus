@@ -23,7 +23,9 @@ function addAtIndex(string: string, index:number, letter: string) {
     return string.slice(0,index) + letter + string.slice(index+1,string.length)
 }
 
-export function getLetterClass(word: string, index: number, wordToFind: string) {
+export function getLetterClass(word: string | undefined, index: number, wordToFind: string) {
+    if (word === undefined) return 'wrongLetter'
+
     if (word[index] == wordToFind[index])  return 'correctLetter'
 
     if (getNumberOfMisplacedLetters(word[index], word, wordToFind) - getNumberOfPreviousMisplacedLetters(word[index], index, word, wordToFind) > 0) return 'nearLetter'
