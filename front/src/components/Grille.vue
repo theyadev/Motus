@@ -14,7 +14,7 @@ const props = defineProps<Props>();
 
 const { roomId, gridId } = toRefs(props);
 
-const { startGame, onStart } = useSocket();
+const { startGame } = useSocket();
 
 const answers = ref<string[]>([]);
 const wordToFind = ref<string>("");
@@ -24,9 +24,7 @@ const maxRows = 6
 
 let answer = ref("");
 
-startGame();
-
-onStart((word) => {
+startGame((word) => {
   wordToFind.value = word;
   closestWord.value = ".".repeat(word.length);
 });
