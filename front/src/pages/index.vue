@@ -4,6 +4,6 @@ import Grille from "../components/Grille.vue";
 
 <template>
   <div class="flex justify-around h-screen bg-red-600">
-    <Grille :id="1235612" player="Dark" />
+    <Grille :roomId="1235612" gridId="Dark" />
   </div>
 </template>

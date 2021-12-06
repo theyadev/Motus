@@ -6,13 +6,13 @@ import normalize from "../../../functions/normalize";
 import useSocket from "../stores/socket";
 
 interface Props {
-  id: number;
-  player: string;
+  roomId: number;
+  gridId: string;
 }
 
 const props = defineProps<Props>();
 
-const { id, player } = toRefs(props);
+const { roomId, gridId } = toRefs(props);
 
 const { startGame, onStart } = useSocket();
 
