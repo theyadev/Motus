@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 import { reactive } from "@vue/reactivity";
-import Player from "../../../types/Player"
+import Player from "../../../types/Player";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -14,18 +14,20 @@ const socket = reactive(
   })
 );
 
-type startCallback = (word: string) => void;
+interface GridRes {
+  answers: string[];
+  closestWord: string;
+  wordToFind: string;
+  finished: boolean
+}
 
 type usersCallback = (users: Player[]) => void;
 
-export default function useSocket() {
-  function startGame(callback: startCallback) {
-    socket.emit("START GAME");
-    socket.once("START", (word: string) => {
-      callback(word);
-    });
-  }
+type gridCallback = (gridId: number) => void;
 
+type gridDataCallback = (grid: GridRes) => void;
+
+export default function useSocket() {
   function createGame(username: string) {
     socket.emit("CREATE GAME", username);
 
@@ -70,13 +72,34 @@ export default function useSocket() {
   }
 
   function updateUsers(id: number) {
-    socket.emit("UPDATE USERS", id);
+    socket.emit("UPDATE PLAYERS", id);
   }
 
   function onUserUpdate(callback: usersCallback) {
-    socket.on("USERS", (newUsers) => {
+    socket.on("PLAYERS", (newUsers) => {
       callback(newUsers);
     });
+  }
+
+  function startGame(id: number) {
+    socket.emit("START GAME", id);
+  }
+
+  function onGrid(callback: gridCallback) {
+    socket.on("GRID", (gridId: number) => {
+      callback(gridId);
+    });
+  }
+
+  function getGridData(id: number, callback: gridDataCallback) {
+    socket.emit("GET GRID DATA", id);
+    socket.on("GRID DATA", function (grid: GridRes) {
+      callback(grid);
+    });
+  }
+
+  function submitAnswer(id: number, answer: string) {
+    socket.emit("SUBMIT ANSWER", id, answer)
   }
 
   return {
@@ -86,5 +109,8 @@ export default function useSocket() {
     doesGameExist,
     joinGame,
     updateUsers,
+    onGrid,
+    getGridData,
+    submitAnswer
   };
 }
