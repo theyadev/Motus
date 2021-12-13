@@ -6,38 +6,40 @@ import normalize from "../../../functions/normalize";
 import useSocket from "../stores/socket";
 
 interface Props {
-    roomId: number;
-    gridId: string;
+    gridId: number;
 }
 
 const props = defineProps<Props>();
 
-const { roomId, gridId } = toRefs(props);
+const { gridId } = toRefs(props);
 
-const { startGame } = useSocket();
+const { getGridData, submitAnswer } = useSocket()
 
 const answers = ref<string[]>([]);
 const wordToFind = ref<string>("");
 const closestWord = ref<string>("");
-
+const finished = ref<boolean>(false)
 const maxRows = 6
 
 let answer = ref("");
 
-startGame((word) => {
-    wordToFind.value = word;
-    closestWord.value = ".".repeat(word.length);
-});
+getGridData(gridId.value, (grid) => {
 
-function updateClosestWord() {
-    for (let i = 0; i < answer.value.length; i++) {
-        if (answer.value[i] == wordToFind.value[i]) {
-            closestWord.value = addAtIndex(closestWord.value, i, answer.value[i]);
-        }
+    finished.value = grid.finished
+    answers.value = grid.answers
+    closestWord.value = grid.closestWord
+    wordToFind.value = grid.wordToFind
+
+
+    if (answers.value.length >= maxRows) {
+        answers.value = answers.value.splice(maxRows - 1, maxRows);
     }
-}
+})
 
-function submitAnswer() {
+function submit() {
+    if (finished.value) {
+        return;
+    }
     if (!isInDictionary(normalize(answer.value))) {
         // TODO: toast pas dans le dico
         return;
@@ -48,15 +50,7 @@ function submitAnswer() {
         return;
     }
 
-    answers.value.push(normalize(answer.value));
-
-    if (answer.value != wordToFind.value) {
-        updateClosestWord()
-
-        if (answers.value.length == maxRows) {
-            answers.value = answers.value.splice(maxRows - 1, maxRows);
-        }
-    }
+    submitAnswer(gridId.value, answer.value)
 
     answer.value = "";
 }
@@ -67,7 +61,7 @@ function submitAnswer() {
         <div v-if="wordToFind != ''" class="flex flex-col">
             <div v-for="row in maxRows" :key="row" class="flex">
                 <div
-                    v-if="row - 1 == answers.length"
+                    v-if="row - 1 == answers.length && answers.at(-1) != wordToFind"
                     v-for="i in closestWord.length"
                     class="wrongLetter"
                 >{{ closestWord[i - 1] }}</div>
@@ -82,7 +76,7 @@ function submitAnswer() {
                 </div>
             </div>
             <div class="flex justify-center">
-                <form @submit.prevent="submitAnswer">
+                <form @submit.prevent="submit">
                     <input
                         placeholder="Tapez votre réponse ici"
                         class="mt-2 px-4 py-1"
