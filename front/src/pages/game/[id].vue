@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Grille from '../../components/Grille.vue';
 import { ref, useAttrs } from 'vue';
 import { useRouter } from 'vue-router';
 import useSocket from '../../stores/socket';
@@ -8,13 +9,19 @@ const router = useRouter()
 
 const { id } = useAttrs()
 
-const { doesGameExist, onUserUpdate, updateUsers } = useSocket()
+const gameId = Number(id)
+
+const { doesGameExist, onUserUpdate, updateUsers, startGame, onGrid } = useSocket()
 
 let showPage = ref<boolean>(false)
 let users = ref<Player[]>([])
-async function init() {
-    const gameId = Number(id)
+let gridId = ref<number>(0)
 
+function start() {
+    startGame(gameId)
+}
+
+async function init() {
     showPage.value = (await doesGameExist(gameId))
 
     if (showPage.value == false) router.push("/404")
@@ -24,6 +31,10 @@ async function init() {
     onUserUpdate((newUsers) => {
         users.value = newUsers
     })
+
+    onGrid((id) => {
+        gridId.value = id
+    })
 }
 
 init()
@@ -31,7 +42,13 @@ init()
 
 <template>
     <div v-if="showPage">
-        GAME
-        <div v-for="user in users">{{ user.username}}</div>
+        <div v-if="gridId != 0">
+            <Grille :grid-id="gridId" />
+        </div>
+        <div v-else>
+            GAME
+            <div v-for="user in users">{{ user.username }}</div>
+            <button @click="start">Start</button>
+        </div>
     </div>
 </template>
