@@ -1,0 +1,30 @@
+{
+  "name": "motus",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:server": "cd apps/server & npm run dev",
+    "dev:web": "cd apps/web & npm run dev",
+    "postinstall": "cd apps/server && npm install && cd ../web && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theyadev/Motus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theyadev/Motus/issues"
+  },
+  "homepage": "https://github.com/theyadev/Motus#readme",
+  "workspaces": [
+    "apps/*"
+  ],
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.3"
+  }
+}

@@ -2,11 +2,19 @@ import express from "express";
 import helmet from "helmet";
 
 import { Socket, Server } from "socket.io";
-import getWords from "./functions/words";
 
-import Player from "../../types/Player";
-import normalize from "../../functions/normalize";
+// Import Classes
+import Player from "../../../packages/Classes/Player";
+import Game from "../../../packages/Classes/Game";
+import Grid from "../../../packages/Classes/Grid";
 
+// Import Functions
+import normalize from "../../../packages/Functions/normalize";
+import getWords from "../../../packages/Functions/words";
+
+import { getRandomWord, generateSeed } from "../../../packages/Functions/utils"
+
+// Express Server
 const app = express();
 
 app.use(helmet());
@@ -17,90 +25,23 @@ const server = app.listen(PORT, () => {
   console.log("Server app listening on port " + PORT);
 });
 
+// SocketIO Server
 const io = new Server(server, {
   cors: {
     origin: "*",
   },
 });
 
-const words = getWords();
-
-/**
- * FFA : One grid for all players
- * FFFA : Fast Free For All. One grid per player with the same word
- */
-type Mode = "FFA" | "FFA TEAM" | "BR" | "FFFA";
-
-type State = "IN GAME" | "MENU";
-
+// Init Types
 type Games = Map<number, Game>;
-
 type Grids = Map<number, Grid>;
 
-class Game {
-  id: number;
-  players: Player[];
-  mode: Mode;
-  state: State;
-  currentRound: number;
-  maxRound: number;
-  playTime: number;
-
-  constructor(id: number, host: Player) {
-    this.id = id;
-    this.players = [host];
-    this.mode = "FFA";
-    this.state = "MENU";
-    this.currentRound = 0;
-    this.maxRound = 5;
-    this.playTime = 60;
-  }
-}
-
-class Grid {
-  id: number;
-  answers: string[];
-  wordToFind: string;
-  closestWord: string;
-  playerIndex: number;
-  finished: boolean;
-
-  constructor(id: number, wordToFind: string) {
-    this.id = id;
-    this.answers = [];
-    this.wordToFind = wordToFind;
-    this.closestWord = ".".repeat(wordToFind.length);
-    this.playerIndex = 0;
-    this.finished = false;
-  }
-
-  // TODO: Trouver un meilleur nom !!!!!!!!!!
-  send() {
-    return {
-      answers: this.answers,
-      closestWord: this.closestWord,
-      wordToFind: this.wordToFind,
-      finished: this.finished,
-    };
-  }
-}
+// Init Variables
+const words = getWords();
 
 let Games: Games = new Map();
-
 let Grids: Grids = new Map();
 
-function generateSeed(duplicates: Games | Grids) {
-  let id = Math.floor(Math.random() * 1000000000);
-  while (duplicates.has(id)) {
-    id = Math.floor(Math.random() * 1000000000);
-  }
-
-  return id;
-}
-
-function getRandomWord() {
-  return words[Math.floor(Math.random() * (words.length - 1))];
-}
 
 io.on("connection", function (socket: Socket) {
   socket.on("START GAME", function (id: number) {
@@ -112,7 +53,7 @@ io.on("connection", function (socket: Socket) {
 
     switch (game.mode) {
       case "FFFA":
-        word = getRandomWord();
+        word = getRandomWord(words);
 
         for (const player of game.players) {
           const id = generateSeed(Grids);
@@ -123,7 +64,7 @@ io.on("connection", function (socket: Socket) {
 
         break;
       case "FFA":
-        word = getRandomWord();
+        word = getRandomWord(words);
 
         const id = generateSeed(Grids);
         Grids.set(id, new Grid(id, word));

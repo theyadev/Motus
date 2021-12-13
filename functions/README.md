@@ -1,1 +1,0 @@
-# Folder containing global functions (used on back AND front)

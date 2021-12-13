@@ -2,7 +2,7 @@
 import { ref, toRefs } from "@vue/reactivity";
 import { addAtIndex, getLetterClass } from "../functions/word";
 import { isInDictionary } from "../functions/dictionary";
-import normalize from "../../../functions/normalize";
+import normalize from "../../../../packages/functions/normalize";
 import useSocket from "../stores/socket";
 
 interface Props {
