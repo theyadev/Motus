@@ -4,15 +4,15 @@ import helmet from "helmet";
 import { Socket, Server } from "socket.io";
 
 // Import Classes
-import Player from "../../../packages/Classes/Player";
-import Game from "../../../packages/Classes/Game";
-import Grid from "../../../packages/Classes/Grid";
+import Player from "@classes/Player";
+import Game from "@classes/Game";
+import Grid from "@classes/Grid";
 
 // Import Functions
-import normalize from "../../../packages/Functions/normalize";
-import getWords from "../../../packages/Functions/words";
+import normalize from "@functions/normalize";
+import getWords from "@functions/words";
 
-import { getRandomWord, generateSeed } from "../../../packages/Functions/utils"
+import { getRandomWord, generateSeed } from "@functions/utils"
 
 // Express Server
 const app = express();
