@@ -1,5 +1,8 @@
 import Game from "../Classes/Game";
 import Grid from "../Classes/Grid";
+import getWords from "./words";
+
+const words = getWords();
 
 export function generateSeed(
   duplicates: Map<string, Game> | Map<string, Grid>
@@ -12,7 +15,7 @@ export function generateSeed(
   return id;
 }
 
-export function getRandomWord(words: string[]) {
+export function getRandomWord() {
   return "banane"
   return words[Math.floor(Math.random() * (words.length - 1))];
 }

@@ -1,3 +1,5 @@
+import { getRandomWord } from "../Functions/utils";
+
 export default class Grid {
     id: string;
     roomId: string;
@@ -8,6 +10,8 @@ export default class Grid {
     closestWord: string;
     playerIndex: number;
     finished: boolean;
+    currentTurn: number;
+    time: number;
     
   
     constructor(id: string, roomId: string, wordToFind: string) {
@@ -20,6 +24,8 @@ export default class Grid {
       this.finished = false;
       this.currentRound = 0;
       this.maxRound = 5;
+      this.currentTurn = 0
+      this.time = 0
     }
   
     // TODO: Trouver un meilleur nom !!!!!!!!!!
@@ -29,6 +35,25 @@ export default class Grid {
         closestWord: this.closestWord,
         wordToFind: this.wordToFind,
         finished: this.finished,
+        currentTurn: this.currentTurn,
+        time: this.time
       };
+    }
+
+    nextTurn(length: number) {
+      if (this.currentTurn < length) {
+        this.currentTurn++;
+      } else {
+        this.currentTurn = 0;
+      }
+    }
+
+    reset() {
+      this.wordToFind = getRandomWord();
+      this.closestWord = ".".repeat(this.wordToFind.length);
+      this.answers = [];
+      this.finished = false;
+      this.currentTurn = 0
+      this.time = 0
     }
   }

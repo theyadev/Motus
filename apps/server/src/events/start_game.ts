@@ -6,8 +6,7 @@ import Grid from "../../../../packages/Classes/Grid";
 import Game from "../../../../packages/Classes/Game";
 import getWords from "../../../../packages/Functions/words";
 import { Server, Socket } from "socket.io";
-
-const words = getWords();
+import Player from "../../../../packages/Classes/Player";
 
 export default function (
   io: Server,
@@ -24,7 +23,7 @@ export default function (
 
     switch (game.mode) {
       case "FFFA":
-        word = getRandomWord(words);
+        word = getRandomWord();
 
         for (const player of game.players) {
           const id = "grid:" + generateSeed(Grids);
@@ -35,14 +34,14 @@ export default function (
 
         break;
       case "FFA":
-        word = getRandomWord(words);
+        word = getRandomWord();
 
         const id = "grid:" + generateSeed(Grids);
         Grids.set(id, new Grid(id, game.id, word));
 
         for (const player of game.players) {
           player.gridId = id;
-          io.sockets.sockets.get(player.socketId)?.join(id)
+          io.sockets.sockets.get(player.socketId)?.join(id);
         }
         break;
     }
@@ -58,5 +57,42 @@ export default function (
 
       io.to(player.socketId).emit("GRID", grid.id);
     }
+
+    const gridIds = [
+      ...new Set(
+        game.players.map((p) => {
+          return p.gridId;
+        })
+      ),
+    ];
+
+    if (gridIds == []) return;
+
+    for (const gridId of gridIds) {
+      if (!gridId) continue
+
+      const grid = Grids.get(gridId)
+      
+      if (!grid) continue
+
+      const players = game.players.filter((p) => p.gridId == grid.id);
+
+      const interval: any = setInterval(() => {
+        if (grid.time > 10) {
+          console.log("TOUR SUIVANT");
+          
+          grid.nextTurn(players.length - 1);
+          grid.time = 0;
+        }
+
+        if (!grid.finished) {
+          grid.time++;
+        }
+
+        io.sockets.in(grid.id).emit("GRID DATA", grid.send());
+      }, 1000);
+    }
+
+    
   });
 }

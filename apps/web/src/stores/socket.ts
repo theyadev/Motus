@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
 import { reactive } from "@vue/reactivity";
 import Player from "../../../../packages/Classes/Player";
+import usePlayer from "./player";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -19,6 +20,8 @@ interface GridRes {
   closestWord: string;
   wordToFind: string;
   finished: boolean;
+  currentTurn: number;
+  time: number;
 }
 
 type usersCallback = (users: Player[]) => void;
@@ -27,12 +30,15 @@ type gridCallback = (gridId: string) => void;
 
 type gridDataCallback = (grid: GridRes) => void;
 
+let { updatePlayer } = usePlayer()
+
 export default function useSocket() {
   function createGame(username: string) {
     socket.emit("CREATE GAME", username);
 
     return new Promise<string>(function (resolve, reject) {
-      socket.once("CREATE", (id: string) => {
+      socket.once("CREATE", (id: string, newPlayer: Player) => {
+        updatePlayer(newPlayer)
         resolve(id);
       });
 
@@ -46,7 +52,8 @@ export default function useSocket() {
     socket.emit("JOIN GAME", username, id);
 
     return new Promise<boolean>(function (resolve, reject) {
-      socket.once("JOIN", (join: boolean) => {
+      socket.once("JOIN", (join: boolean, newPlayer: Player) => {
+        updatePlayer(newPlayer)
         resolve(join);
       });
 
@@ -96,8 +103,11 @@ export default function useSocket() {
     });
   }
 
-  function submitAnswer(id: string, answer: string) {
-    socket.emit("SUBMIT ANSWER", id, answer);
+  function submitAnswer(id: string, answer: string, self: Player, callback: () => void) {
+    socket.emit("SUBMIT ANSWER", id, answer, self);
+    socket.on("ANSWER", () => {
+      callback()
+    })
   }
 
   return {

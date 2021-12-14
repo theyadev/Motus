@@ -24,6 +24,6 @@ export default function (
       socket.join(id);
     }
 
-    socket.emit("JOIN", res);
+    socket.emit("JOIN", res, player);
   });
 }

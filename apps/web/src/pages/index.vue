@@ -21,9 +21,12 @@ async function create(){
   <!-- <div class="flex justify-around h-screen bg-red-600">
     <Grille :roomId="1235612" gridId="Dark" />
   </div> -->
-  <div class="flex flex-col w-1/2 space-y-2 px-16">
+  <div class="flex h-screen justify-center items-center">
+  <div class="flex flex-col w-1/2 space-y-2 py-16 px-16 border border-fuchsia-500 items-center">
+    <div class="text-3xl">Motus !</div>
     <input v-model="username" class="border border-fuchsia-900"  placeholder="Pseudonyme" />
     <button class="border border-fuchsia-900" @click="create">Créer</button>
+  </div>
   </div>
   
 </template>

@@ -6,8 +6,7 @@ import Grid from "../../../../packages/Classes/Grid";
 import Game from "../../../../packages/Classes/Game";
 import { Server, Socket } from "socket.io";
 import { getRandomWord } from "../../../../packages/Functions/utils";
-
-const words = getWords();
+import Player from "../../../../packages/Classes/Player";
 
 export default function (
   io: Server,
@@ -15,12 +14,26 @@ export default function (
   Games: Map<string, Game>,
   Grids: Map<string, Grid>
 ) {
-  socket.on("SUBMIT ANSWER", (id: string, answer: string) => {
+  socket.on("SUBMIT ANSWER", (id: string, answer: string, self: Player) => {
     const grid = Grids.get(id);
 
     if (!grid) return;
 
     if (grid.finished === true) return;
+
+    const game = Games.get(grid.roomId);
+
+    if (!game) return;
+
+    const players = game.players.filter((p) => p.gridId == grid.id);
+
+    const index = players.findIndex((p) => {
+      return p.socketId == self.socketId;
+    });
+
+    if (grid.currentTurn != index) return;
+
+    grid.nextTurn(players.length - 1);
 
     grid.answers.push(normalize(answer));
 
@@ -31,10 +44,7 @@ export default function (
         setTimeout(() => {
           grid.currentRound++;
 
-          grid.wordToFind = getRandomWord(words);
-          grid.closestWord = ".".repeat(grid.wordToFind.length);
-          grid.answers = [];
-          grid.finished = false;
+          grid.reset();
 
           io.sockets.in(grid.id).emit("GRID DATA", grid.send());
         }, 2500);
@@ -42,6 +52,10 @@ export default function (
     }
 
     updateClosestWord(grid);
+
+    socket.emit("ANSWER");
+
+    grid.time = 0
 
     io.sockets.in(grid.id).emit("GRID DATA", grid.send());
   });
