@@ -7,6 +7,8 @@ const router = useRouter()
 
 const { id } = useAttrs()
 
+const gameId = "game:" + id
+
 const { doesGameExist, joinGame } = useSocket()
 
 let showPage = ref<boolean>(false)
@@ -14,13 +16,13 @@ let showPage = ref<boolean>(false)
 let username = ref<string>("")
 
 async function init() {
-    showPage.value = (await doesGameExist(Number(id)))
+    showPage.value = (await doesGameExist(gameId))
 
     if (showPage.value == false) router.push("/404")
 }
 
 async function join() {
-    const join = await joinGame(username.value, Number(id))
+    const join = await joinGame(username.value, gameId)
 
     if (join) {
         router.push('/game/' + id)

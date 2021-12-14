@@ -12,7 +12,7 @@ const { createGame } = useSocket()
 async function create(){
   const id = await createGame(username.value)
 
-  router.push("/game/" + id)
+  router.push("/game/" + id.split("game:")[1])
 }
 
 </script>

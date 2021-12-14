@@ -3,19 +3,19 @@ import Grille from '../../components/Grille.vue';
 import { ref, useAttrs } from 'vue';
 import { useRouter } from 'vue-router';
 import useSocket from '../../stores/socket';
-import Player from "../../../../types/Player"
+import Player from "../../../../../packages/Classes/Player"
 
 const router = useRouter()
 
 const { id } = useAttrs()
 
-const gameId = Number(id)
+const gameId = "game:" + id
 
 const { doesGameExist, onUserUpdate, updateUsers, startGame, onGrid } = useSocket()
 
 let showPage = ref<boolean>(false)
 let users = ref<Player[]>([])
-let gridId = ref<number>(0)
+let gridId = ref<string>("")
 
 function start() {
     startGame(gameId)
@@ -35,14 +35,14 @@ async function init() {
     onGrid((id) => {
         gridId.value = id
     })
-}
 
+}
 init()
 </script>
 
 <template>
     <div v-if="showPage">
-        <div v-if="gridId != 0">
+        <div v-if="gridId != ''">
             <Grille :grid-id="gridId" />
         </div>
         <div v-else>

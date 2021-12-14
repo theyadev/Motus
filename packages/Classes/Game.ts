@@ -9,7 +9,7 @@ export type Mode = "FFA" | "FFA TEAM" | "BR" | "FFFA";
 export type State = "IN GAME" | "MENU";
 
 export default class Game {
-  id: number;
+  id: string;
   players: Player[];
   mode: Mode;
   state: State;
@@ -17,7 +17,7 @@ export default class Game {
   maxRound: number;
   playTime: number;
 
-  constructor(id: number, host: Player) {
+  constructor(id: string, host: Player) {
     this.id = id;
     this.players = [host];
     this.mode = "FFA";

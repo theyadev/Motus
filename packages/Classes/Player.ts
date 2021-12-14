@@ -2,7 +2,7 @@ export default class Player {
     username: string;
     socketId: string;
     host: boolean;
-    gridId?: number; 
+    gridId?: string; 
   
     constructor(username: string, socketId: string, host?: boolean) {
       this.username = username;

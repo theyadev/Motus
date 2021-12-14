@@ -6,7 +6,7 @@ import normalize from "../../../../packages/functions/normalize";
 import useSocket from "../stores/socket";
 
 interface Props {
-    gridId: number;
+    gridId: string;
 }
 
 const props = defineProps<Props>();
