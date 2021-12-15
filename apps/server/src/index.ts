@@ -8,7 +8,7 @@ import Game from "../../../packages/Classes/Game";
 import Grid from "../../../packages/Classes/Grid";
 
 // Import Functions
-import socketHandler from "./socketHandler";
+import socketServer from "./socketServer";
 
 // Express Server
 const app = express();
@@ -21,13 +21,6 @@ const server = app.listen(PORT, () => {
   console.log("Server app listening on port " + PORT);
 });
 
-// SocketIO Server
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-  },
-});
-
 // Init Types
 type Games = Map<string, Game>;
 type Grids = Map<string, Grid>;
@@ -36,12 +29,4 @@ type Grids = Map<string, Grid>;
 let Games: Games = new Map();
 let Grids: Grids = new Map();
 
-io.on("connection", function (socket: Socket) {
-  const modules = socketHandler();
-
-  if (modules) {
-    for (const module in modules) {      
-      modules[module](io, socket, Games, Grids);
-    }
-  }
-});
+const socketio = new socketServer(server, "./events", Games, Grids)
