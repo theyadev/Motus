@@ -7,6 +7,23 @@ import Game from "../../../../packages/Classes/Game";
 import { Server, Socket } from "socket.io";
 import { getRandomWord } from "../../../../packages/Functions/utils";
 import Player from "../../../../packages/Classes/Player";
+import Answer from "../../../../packages/Types/Answer";
+
+function generateAnswer(wordToFind: string, word: string): Answer {
+  let answer: Answer = {
+    letters: [],
+    correct: false
+  }
+
+  for (const l of word) {
+    answer.letters.push({
+      char: normalize(l),
+      classe: 'wrongLetter'
+    })
+  }
+
+  return answer
+}
 
 export default function (
   io: Server,
@@ -32,10 +49,11 @@ export default function (
     });
 
     if (grid.currentTurn != index) return;
+    if (answer.length != grid.wordToFind.length) return
 
     grid.nextTurn(players.length - 1);
 
-    grid.answers.push(normalize(answer));
+    grid.answers.push(generateAnswer(grid.wordToFind, answer));
 
     if (answer == grid.wordToFind) {
       grid.finished = true;

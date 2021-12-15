@@ -18,8 +18,7 @@ function getNumberOfPreviousMisplacedLetters(letter: string, index: number, word
     return nb
 }
 
-export 
-function addAtIndex(string: string, index:number, letter: string) {
+export function addAtIndex(string: string, index:number, letter: string) {
     return string.slice(0,index) + letter + string.slice(index+1,string.length)
 }
 

@@ -16,16 +16,10 @@ export default function getWords() {
 
 export function updateClosestWord(grid: Grid) {
   const word = grid.answers.at(-1);
-  if (!word) return;
-  for (let i = 0; i < word.length; i++) {
-    if (word[i] == grid.wordToFind[i]) {
-      grid.closestWord = addAtIndex(grid.closestWord, i, word[i]);
+  if (!word || !grid.closestWord) return;
+  for (let i = 0; i < word.letters.length; i++) {
+    if (word.letters[i].char == grid.wordToFind[i]) {
+      grid.closestWord.letters[i] = word.letters[i]
     }
   }
-}
-
-export function addAtIndex(string: string, index: number, letter: string) {
-  return (
-    string.slice(0, index) + letter + string.slice(index + 1, string.length)
-  );
 }
