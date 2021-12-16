@@ -19,7 +19,8 @@ export function updateClosestWord(grid: Grid) {
   if (!word || !grid.closestWord) return;
   for (let i = 0; i < word.letters.length; i++) {
     if (word.letters[i].char == grid.wordToFind[i]) {
-      grid.closestWord.letters[i] = word.letters[i]
+      grid.closestWord.letters[i].char = word.letters[i].char
+      grid.closestWord.letters[i].classe = "wrongLetter"
     }
   }
 }
