@@ -1,6 +1,4 @@
-import {
-  generateSeed,
-} from "../../../../packages/Functions/utils";
+import { generateSeed } from "../../../../packages/Functions/utils";
 import Grid from "../../../../packages/Classes/Grid";
 import Game from "../../../../packages/Classes/Game";
 import Player from "../../../../packages/Classes/Player";

@@ -27,4 +27,4 @@ type Grids = Map<string, Grid>;
 let Games: Games = new Map();
 let Grids: Grids = new Map();
 
-const socketio = new socketServer(server, "./events", Games, Grids)
+const socketio = new socketServer(server, "./events", Games, Grids);

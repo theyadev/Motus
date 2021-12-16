@@ -1,18 +1,15 @@
-import {
-  updateClosestWord,
-} from "../../../../packages/Functions/words";
+import { updateClosestWord } from "../../../../packages/Functions/words";
 import normalize from "../../../../packages/Functions/normalize";
 import Grid from "../../../../packages/Classes/Grid";
 import Game from "../../../../packages/Classes/Game";
 import { Server, Socket } from "socket.io";
-import { getRandomWord } from "../../../../packages/Functions/utils";
 import Player from "../../../../packages/Classes/Player";
 import Answer from "../../../../packages/Types/Answer";
 
 function generateAnswer(wordToFind: string, word: string): Answer {
   // Normalize both
-  word = normalize(word)
-  wordToFind = normalize(wordToFind)
+  word = normalize(word);
+  wordToFind = normalize(wordToFind);
 
   // Create an empty Answer
   let answer: Answer = {
@@ -29,7 +26,7 @@ function generateAnswer(wordToFind: string, word: string): Answer {
     if (word[i] == wordToFind[i]) {
       // If they are the same letter, set the classe to correct
       classe = "correctLetter";
-      // And push an empty letter 
+      // And push an empty letter
       letterList.push("");
     } else {
       // Else push the letter in the letterList
@@ -46,9 +43,9 @@ function generateAnswer(wordToFind: string, word: string): Answer {
   for (let i = 0; i < word.length; i++) {
     if (letterList.includes(word[i]) && word[i] != wordToFind[i]) {
       // Set the letter to near if letter in letter list and it's not a correct letter
-      answer.letters[i].classe = "nearLetter"
+      answer.letters[i].classe = "nearLetter";
       // remove the letter from the letterList
-      letterList[i] = ""
+      letterList[i] = "";
     }
   }
 

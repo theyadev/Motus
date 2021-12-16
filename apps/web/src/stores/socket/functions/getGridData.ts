@@ -1,5 +1,5 @@
 import { socket } from "../index";
-import Answer from "../../../../../../packages/Types/Answer"
+import Answer from "../../../../../../packages/Types/Answer";
 
 interface GridRes {
   answers: Answer[];
