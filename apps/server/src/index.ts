@@ -1,8 +1,6 @@
 import express from "express";
 import helmet from "helmet";
 
-import { Socket, Server } from "socket.io";
-
 // Import Classes
 import Game from "../../../packages/Classes/Game";
 import Grid from "../../../packages/Classes/Grid";
