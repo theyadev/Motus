@@ -14,7 +14,7 @@ function generateAnswer(wordToFind: string, word: string): Answer {
   // Create an empty Answer
   let answer: Answer = {
     letters: [],
-    correct: false,
+    correct: true,
   };
 
   // Create our futre letter list, it will contains all letters of wordToFind
@@ -29,6 +29,7 @@ function generateAnswer(wordToFind: string, word: string): Answer {
       // And push an empty letter
       letterList.push("");
     } else {
+      if (answer.correct === true) answer.correct = false
       // Else push the letter in the letterList
       letterList.push(wordToFind[i]);
     }
