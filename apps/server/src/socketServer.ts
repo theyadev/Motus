@@ -1,5 +1,5 @@
 import { readdirSync } from "fs";
-import { join, resolve } from "path";
+import { join } from "path";
 import { Socket, Server } from "socket.io";
 
 interface Modules extends Object {
@@ -41,7 +41,7 @@ export default class socketServer {
       },
     });
 
-    this.io.on("connection",  (socket: Socket) => {
+    this.io.on("connection", (socket: Socket) => {
       const modules = moduleFetcher(path);
 
       if (!modules) return;

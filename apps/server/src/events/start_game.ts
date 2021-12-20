@@ -4,9 +4,7 @@ import {
 } from "../../../../packages/Functions/utils";
 import Grid from "../../../../packages/Classes/Grid";
 import Game from "../../../../packages/Classes/Game";
-import getWords from "../../../../packages/Functions/words";
 import { Server, Socket } from "socket.io";
-import Player from "../../../../packages/Classes/Player";
 
 export default function (
   io: Server,
@@ -69,18 +67,18 @@ export default function (
     if (gridIds == []) return;
 
     for (const gridId of gridIds) {
-      if (!gridId) continue
+      if (!gridId) continue;
 
-      const grid = Grids.get(gridId)
-      
-      if (!grid) continue
+      const grid = Grids.get(gridId);
+
+      if (!grid) continue;
 
       const players = game.players.filter((p) => p.gridId == grid.id);
 
       const interval: any = setInterval(() => {
         if (grid.time > 10) {
           console.log("TOUR SUIVANT");
-          
+
           grid.nextTurn(players.length - 1);
           grid.time = 0;
         }
@@ -92,7 +90,5 @@ export default function (
         io.sockets.in(grid.id).emit("GRID DATA", grid.send());
       }, 1000);
     }
-
-    
   });
 }

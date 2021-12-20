@@ -9,7 +9,5 @@ export default function (
   Games: Map<string, Game>,
   Grids: Map<string, Grid>
 ) {
-  socket.on("NAME", function () {
-
-  })
+  socket.on("NAME", function () {});
 }

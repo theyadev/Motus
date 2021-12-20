@@ -1,9 +1,10 @@
 import { socket } from "../index";
+import Answer from "../../../../../../packages/Types/Answer";
 
 interface GridRes {
-  answers: string[];
-  closestWord: string;
-  wordToFind: string;
+  answers: Answer[];
+  closestWord: Answer;
+  wordLength: number;
   finished: boolean;
   currentTurn: number;
   time: number;
