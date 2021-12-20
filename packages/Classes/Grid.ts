@@ -1,4 +1,4 @@
-import { getRandomWord } from "../Functions/utils";
+import { getRandomWord } from "../Functions/words";
 import Answer from "../Types/Answer";
 export default class Grid {
   id: string;
@@ -25,7 +25,7 @@ export default class Grid {
     this.currentTurn = 0;
     this.time = 0;
 
-    this.resetClosest()
+    this.resetClosest();
   }
 
   resetClosest() {
@@ -68,6 +68,6 @@ export default class Grid {
     this.finished = false;
     this.currentTurn = 0;
     this.time = 0;
-    this.resetClosest()
+    this.resetClosest();
   }
 }

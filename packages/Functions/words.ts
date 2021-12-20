@@ -1,9 +1,9 @@
 import normalize from "./normalize";
-import words from "../words.json";
+import wordsList from "../words.json";
 import Grid from "../Classes/Grid";
 
 function readWords(): string[] {
-  return words as string[];
+  return wordsList as string[];
 }
 
 export default function getWords() {
@@ -14,6 +14,14 @@ export default function getWords() {
   });
 }
 
+const words = getWords();
+
+export function getRandomWord() {
+  return "banane"
+  // return words[Math.floor(Math.random() * (words.length - 1))];
+}
+
+
 export function updateClosestWord(grid: Grid) {
   const word = grid.answers.at(-1);
   if (!word || !grid.closestWord) return;
@@ -23,4 +31,10 @@ export function updateClosestWord(grid: Grid) {
       grid.closestWord.letters[i].classe = "wrongLetter"
     }
   }
+}
+
+export function isInDictionary(word: string){
+  if (words.includes(normalize(word))) return true
+
+  return false
 }

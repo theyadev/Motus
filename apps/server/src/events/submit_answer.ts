@@ -1,4 +1,4 @@
-import { updateClosestWord } from "../../../../packages/Functions/words";
+import { isInDictionary, updateClosestWord } from "../../../../packages/Functions/words";
 import normalize from "../../../../packages/Functions/normalize";
 import Grid from "../../../../packages/Classes/Grid";
 import Game from "../../../../packages/Classes/Game";
@@ -6,6 +6,10 @@ import { Server, Socket } from "socket.io";
 import Player from "../../../../packages/Classes/Player";
 import Answer from "../../../../packages/Types/Answer";
 
+/**
+ * Convert a string to an Object of type Answer
+ * @returns Answer
+ */
 function generateAnswer(wordToFind: string, word: string): Answer {
   // Normalize both
   word = normalize(word);
@@ -77,7 +81,10 @@ export default function (
     });
 
     if (grid.currentTurn != index) return;
+
     if (answer.length != grid.wordToFind.length) return;
+
+    if (!isInDictionary(answer)) return
 
     grid.nextTurn(players.length - 1);
 

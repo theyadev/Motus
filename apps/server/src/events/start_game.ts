@@ -1,7 +1,5 @@
-import {
-  generateSeed,
-  getRandomWord,
-} from "../../../../packages/Functions/utils";
+import { generateSeed } from "../../../../packages/Functions/utils";
+import { getRandomWord } from "../../../../packages/Functions/words";
 import Grid from "../../../../packages/Classes/Grid";
 import Game from "../../../../packages/Classes/Game";
 import { Server, Socket } from "socket.io";
