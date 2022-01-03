@@ -42,13 +42,16 @@ init();
 </script>
 
 <template>
-  <div v-if="showPage">
-    <div v-if="gridId != ''">
-      <Grille :grid-id="gridId" />
+  <div v-if="showPage" class="bg-gradient-to-r from-red-700 to-red-800 h-screen flex justify-center items-center">
+    
+    <div v-if="gridId != ''" >
+      <Grille :grid-id="gridId" :players="users" />
     </div>
-    <div class="ml-5 space-y-2" v-else>
+
+    <div class="flex flex-col space-y-2 text-white" v-else >
+      
       <div>
-        <p>Liste Joueurs:</p>
+        <p class="text-xl">Liste des joueurs :</p>
         <div v-for="user in users" class="pl-2">- {{ user.username }}</div>
       </div>
       <button
@@ -58,5 +61,7 @@ init();
         Start
       </button>
     </div>
+  
+
   </div>
 </template>

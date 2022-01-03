@@ -16,7 +16,7 @@ async function create() {
 </script>
 
 <template>
-  <div class="flex h-screen justify-center items-center">
+  <div class="flex h-screen justify-center items-center bg-gradient-to-r from-blue-400 to-blue-700">
     <div
       class="
         flex flex-col
@@ -24,17 +24,17 @@ async function create() {
         space-y-2
         py-16
         px-16
-        border border-fuchsia-500
+        
         items-center
       "
     >
-      <div class="text-3xl">Motus !</div>
+      <div class="text-8xl text-white ">Motus !</div>
       <input
         v-model="username"
-        class="border border-fuchsia-900"
+        class="border border-gray-900 py-2 px-4"
         placeholder="Pseudonyme"
       />
-      <button class="border border-fuchsia-900" @click="create">Créer</button>
+      <button class="border border-gray-900 py-2 px-4 bg-gray-200" @click="create">Créer</button>
     </div>
   </div>
 </template>

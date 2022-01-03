@@ -4,14 +4,16 @@ import { ref, toRefs } from "@vue/reactivity";
 import Answer from "../../../../packages/Types/Answer";
 import useSocket from "../stores/socket";
 import usePlayer from "../stores/player";
+import Player from "../../../../packages/Classes/Player";
 
 interface Props {
   gridId: string;
+  players: Player[];
 }
 
 const props = defineProps<Props>();
 
-const { gridId } = toRefs(props);
+const { gridId, players } = toRefs(props);
 
 const { getGridData, submitAnswer } = useSocket();
 
@@ -24,6 +26,7 @@ const wordLength = ref<number>(0);
 const maxRows = 6;
 const playerTurn = ref<number>(0);
 const time = ref<number>(0);
+const currentPlayerTurn = ref<Player>();
 
 let answer = ref("");
 
@@ -33,6 +36,8 @@ getGridData(gridId.value, (grid) => {
   answers.value = grid.answers;
   playerTurn.value = grid.currentTurn;
   closestWord.value = grid.closestWord;
+  currentPlayerTurn.value = players.value[grid.currentTurn];
+
   time.value = 10 - grid.time + 1;
 
   if (answers.value.length >= maxRows) {
@@ -55,24 +60,37 @@ function submit() {
     answer.value = "";
   });
 }
+
+function convertTime(time: number) {
+  const sec = (time % 60).toString().padStart(2, "0");
+  const min = Math.floor(time / 60);
+
+  return min + ":" + sec;
+}
 </script>
 
 <template>
   <transition name="fade" class="flex">
     <div class="flex flex-col">
-      <div v-for="row in maxRows" :key="row" class="flex">
-        <Row
-          v-if="
-            row - 1 == answers.length &&
-            (!answers.at(-1) || answers.at(-1)?.correct === false)
-          "
-          :word="closestWord"
-        />
-        <Row v-else-if="answers[row - 1]" :word="answers[row - 1]" />
-        <Row v-else :word-length="wordLength" />
+      <div class="flex flex-col ring-2 ring-white">
+        <div v-for="row in maxRows" :key="row" class="flex">
+          <Row
+            v-if="
+              row - 1 == answers.length &&
+              (!answers.at(-1) || answers.at(-1)?.correct === false)
+            "
+            :word="closestWord"
+          />
+          <Row v-else-if="answers[row - 1]" :word="answers[row - 1]" />
+          <Row v-else :word-length="wordLength" />
+        </div>
       </div>
       <div class="flex flex-col items-center">
-        <form @submit.prevent="submit">
+        <form
+          @submit.prevent="submit"
+          v-if="currentPlayerTurn?.username == player?.username"
+          class="py-2"
+        >
           <input
             placeholder="Tapez votre réponse ici"
             class="mt-2 px-4 py-1"
@@ -80,24 +98,12 @@ function submit() {
             :maxlength="wordLength"
           />
         </form>
-        <div>Joueur {{ playerTurn }}</div>
-        <div>Temps {{ time }}</div>
-        <div class="flex space-x-1">
-          <div
-            v-for="i in time"
-            class="
-              bg-fuchsia-600
-              h-6
-              w-6
-              rounded-full
-              flex
-              items-center
-              justify-center
-              text-white
-            "
-          >
-            {{ i }}
-          </div>
+        <div v-else class="text-white py-2">
+          C'est au tour de {{ currentPlayerTurn?.username }}
+        </div>
+
+        <div class="bg-blue-600 px-4 py-1 text-xl text-white">
+          {{ convertTime(time) }}
         </div>
       </div>
     </div>

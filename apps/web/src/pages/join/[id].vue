@@ -33,8 +33,8 @@ init()
 </script>
 
 <template>
-    <div v-if="showPage">
-        <input v-model="username" class="border border-fuchsia-900" placeholder="Pseudonyme" />
-        <button class="border border-fuchsia-900" @click="join">Rejoindre</button>
+    <div v-if="showPage" class="space-y-2 h-screen bg-gradient-to-r from-red-700 to-red-800 flex flex-col justify-center items-center">
+        <input v-model="username" class="border border-fuchsia-900 px-4 py-2" placeholder="Pseudonyme" />
+        <button class="bg-red-400 px-4 py-2" @click="join">Rejoindre</button>
     </div>
 </template>
