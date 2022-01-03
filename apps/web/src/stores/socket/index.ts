@@ -9,6 +9,7 @@ import onUserUpdate from "./functions/onUserUpdate";
 import startGame from "./functions/startGame";
 import submitAnswer from "./functions/submitAnswer";
 import updateUsers from "./functions/updateUser";
+import leaveGame from "./functions/leave";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -31,5 +32,6 @@ export default function useSocket() {
     onGrid,
     getGridData,
     submitAnswer,
+    leaveGame
   };
 }

@@ -49,9 +49,9 @@ function submit() {
     return;
   }
 
-  if (!player) return;
+  if (!player.value) return;
 
-  submitAnswer(gridId.value, answer.value, player, function () {
+  submitAnswer(gridId.value, answer.value, player.value, function () {
     answer.value = "";
   });
 }

@@ -1,11 +1,16 @@
 import { readdirSync } from "fs";
 import { join } from "path";
-import { Socket, Server } from "socket.io";
+import { Socket, Server as socketioServer } from "socket.io";
+import { Server as httpServer } from "http";
 
 interface Modules extends Object {
   [key: string]: Function;
 }
 
+/**
+ * @param path Path to the events folder.
+ * @returns Object of Module
+ */
 function moduleFetcher(path: string) {
   let modules: Modules = {};
 
@@ -14,7 +19,7 @@ function moduleFetcher(path: string) {
   const folder = readdirSync(folderPath);
 
   for (const file of folder) {
-    if (!file.endsWith(".js") && !file.endsWith(".ts")) return;
+    if (!file.endsWith(".js") && !file.endsWith(".ts")) continue;
 
     try {
       const filePath = join(path, file);
@@ -33,19 +38,21 @@ function moduleFetcher(path: string) {
 }
 
 export default class socketServer {
-  io: Server;
-  constructor(server: any, path: string, ...args: any[]) {
-    this.io = new Server(server, {
+  io: socketioServer;
+
+  constructor(server: httpServer, path: string, ...args: any[]) {
+    this.io = new socketioServer(server, {
       cors: {
         origin: "*",
       },
     });
 
+    const modules = moduleFetcher(path);
+
+    if (!modules)
+      throw new Error("Modules import failed or there are no modules.");
+
     this.io.on("connection", (socket: Socket) => {
-      const modules = moduleFetcher(path);
-
-      if (!modules) return;
-
       for (const module in modules) {
         modules[module](this.io, socket, ...args);
       }

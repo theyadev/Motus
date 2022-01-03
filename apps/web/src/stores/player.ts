@@ -8,7 +8,7 @@ export default function usePlayer() {
     player.value = newPlayer;
   }
   return {
-    player: player.value,
+    player,
     updatePlayer,
   };
 }

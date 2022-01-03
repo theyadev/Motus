@@ -37,6 +37,7 @@ async function init() {
     gridId.value = id;
   });
 }
+
 init();
 </script>
 
@@ -45,10 +46,17 @@ init();
     <div v-if="gridId != ''">
       <Grille :grid-id="gridId" />
     </div>
-    <div v-else>
-      GAME
-      <div v-for="user in users">{{ user.username }}</div>
-      <button @click="start">Start</button>
+    <div class="ml-5 space-y-2" v-else>
+      <div>
+        <p>Liste Joueurs:</p>
+        <div v-for="user in users" class="pl-2">- {{ user.username }}</div>
+      </div>
+      <button
+        @click="start"
+        class="text-lg px-10 py-1 bg-red-500 rounded text-white"
+      >
+        Start
+      </button>
     </div>
   </div>
 </template>

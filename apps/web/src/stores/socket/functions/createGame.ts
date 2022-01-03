@@ -7,7 +7,7 @@ export default function createGame(username: string) {
   socket.emit("CREATE GAME", username);
 
   return new Promise<string>(function (resolve, reject) {
-    socket.once("CREATE", (id: string, newPlayer: Player) => {
+    socket.once("CREATE", (id: string, newPlayer: Player) => {   
       updatePlayer(newPlayer);
       resolve(id);
     });
