@@ -10,17 +10,23 @@ export default function (
   Games: Map<string, Game>,
   Grids: Map<string, Grid>
 ) {
-  socket.on("LEAVE GAME", function (player: Player, id: string) {
-    const game = Games.get("game:" + id);
+  socket.on("LEAVE GAME", async function (player: Player, id: string) {
+    const gameId = "game:" + id
+    
+    const game = Games.get(gameId);
 
     if (!game) return;
 
     const index = game.players.findIndex((p) => {
-        return p.socketId == player.socketId
-    })
+      return p.socketId == player.socketId;
+    });
 
-    game.players.splice(index, 1)
+    const removedPlayer = game.players.splice(index, 1)[0];
 
-    io.sockets.in("game:" + id).emit("PLAYERS", game.players);
+    if (removedPlayer.gridId) socket.leave(removedPlayer.gridId);
+
+    socket.leave(gameId);
+
+    io.sockets.in(gameId).emit("PLAYERS", game.players);
   });
 }

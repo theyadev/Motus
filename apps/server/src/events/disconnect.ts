@@ -16,7 +16,10 @@ export default function (
       for (let i = 0; i < Game.players.length; i++) {
         if (Game.players[i].socketId != socket.id) continue;
 
-        Game.players.splice(i, 1);
+        const player = Game.players.splice(i, 1);
+
+        socket.leave(id)
+        if (player[0].gridId) socket.leave(player[0].gridId)
 
         io.sockets.in(id).emit("PLAYERS", Game.players);
       }
