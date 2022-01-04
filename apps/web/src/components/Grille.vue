@@ -41,11 +41,11 @@ getGridData(gridId.value, (grid) => {
   time.value = 10 - grid.time + 1;
 
   if (answers.value.length >= maxRows) {
-    answers.value = answers.value.splice(
-      Math.floor(answers.value.length / maxRows) * maxRows,
-      answers.value.length -
-        Math.floor(answers.value.length / maxRows) * maxRows
-    );
+    /* [0,1,2,3,4,5,6,7,8,9,10]
+       On enleve de la liste autant de multiples de (maxRows - 1) que possible en partant du début si le résultat n'est pas une liste vide*/
+    let multiplesOfMaxRowsInAnswers = Math.floor(answers.value.length / (maxRows - 1)) - Number(!(answers.value.length % (maxRows - 1)))
+
+    answers.value.splice(0, multiplesOfMaxRowsInAnswers * (maxRows - 1))
   }
 });
 
@@ -98,13 +98,9 @@ function convertTime(time: number) {
             :maxlength="wordLength"
           />
         </form>
-        <div v-else class="text-white py-2">
-          C'est au tour de {{ currentPlayerTurn?.username }}
-        </div>
+        <div v-else class="text-white py-2">C'est au tour de {{ currentPlayerTurn?.username }}</div>
 
-        <div class="bg-blue-600 px-4 py-1 text-xl text-white">
-          {{ convertTime(time) }}
-        </div>
+        <div class="bg-blue-600 px-4 py-1 text-xl text-white">{{ convertTime(time) }}</div>
       </div>
     </div>
   </transition>

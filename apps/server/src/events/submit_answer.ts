@@ -49,8 +49,13 @@ function generateAnswer(wordToFind: string, word: string): Answer {
     if (letterList.includes(word[i]) && word[i] != wordToFind[i]) {
       // Set the letter to near if letter in letter list and it's not a correct letter
       answer.letters[i].classe = "nearLetter";
+
+      const letterIndex = letterList.findIndex(l => {
+        return l == word[i]
+      })
+
       // remove the letter from the letterList
-      letterList[i] = "";
+      letterList[letterIndex] = "";
     }
   }
 
@@ -90,10 +95,10 @@ export default function (
 
     grid.answers.push(generateAnswer(grid.wordToFind, answer));
 
-    if (answer == grid.wordToFind) {
+    if (normalize(answer) == normalize(grid.wordToFind)) {
       grid.finished = true;
 
-      if (grid.currentRound < grid.maxRound) {
+      if (grid.currentRound < grid.maxRound - 1) {
         setTimeout(() => {
           grid.currentRound++;
 
@@ -101,6 +106,23 @@ export default function (
 
           io.sockets.in(grid.id).emit("GRID DATA", grid.send());
         }, 2500);
+      } else {
+        if (game.interval) {
+            clearInterval(game.interval)
+   
+            io.sockets.in(game.id).emit("PLAYERS", game.players);
+            
+            setTimeout(() => {
+              game.status = "LEADERBOARD"
+              io.sockets.in(game.id).emit("STATUS", game.status)
+            }, 2000);
+
+            setTimeout(() => {
+              game.status = "MENU"
+              io.sockets.in(game.id).emit("STATUS", game.status)
+            }, 7000);
+        }
+     
       }
     }
 

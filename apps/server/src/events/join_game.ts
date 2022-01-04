@@ -25,5 +25,6 @@ export default function (
     }
 
     socket.emit("JOIN", res, player);
+    socket.emit("STATUS", game.status)
   });
 }

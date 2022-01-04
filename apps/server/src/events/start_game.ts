@@ -42,6 +42,8 @@ export default function (
         break;
     }
 
+    game.status = "PLAYING";
+
     for (const player of game.players) {
       const gridId = player.gridId;
 
@@ -53,6 +55,8 @@ export default function (
 
       io.to(player.socketId).emit("GRID", grid.id);
     }
+
+    io.sockets.in(game.id).emit("STATUS", game.status);
 
     const gridIds = [
       ...new Set(
@@ -73,10 +77,8 @@ export default function (
 
       const players = game.players.filter((p) => p.gridId == grid.id);
 
-      const interval: any = setInterval(() => {
+      game.interval = setInterval(() => {
         if (grid.time > 10) {
-          console.log("TOUR SUIVANT");
-
           grid.nextTurn(players.length - 1);
           grid.time = 0;
         }

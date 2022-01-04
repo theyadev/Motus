@@ -1,6 +1,7 @@
 export default class Player {
     username: string;
     socketId: string;
+    score: number;
     host: boolean;
     gridId?: string;
   
@@ -8,5 +9,6 @@ export default class Player {
       this.username = username;
       this.host = host || false;
       this.socketId = socketId
+      this.score = 0
     }
   }

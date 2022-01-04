@@ -7,7 +7,9 @@ function readWords(): string[] {
 }
 
 export default function getWords() {
-  const words = readWords();
+  const words = readWords().filter(word => {
+    return word.length < 10
+  });
 
   return words.map((word) => {
     return normalize(word);
@@ -17,8 +19,8 @@ export default function getWords() {
 const words = getWords();
 
 export function getRandomWord() {
-  return "banane"
-  // return words[Math.floor(Math.random() * (words.length - 1))];
+  // return "striée"
+  return words[Math.floor(Math.random() * (words.length - 1))];
 }
 
 

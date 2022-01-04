@@ -19,6 +19,7 @@ export default function (
     Games.set(id, game);
 
     socket.emit("CREATE", id, player);
+    socket.emit("STATUS", game.status)
 
     socket.join(id);
   });

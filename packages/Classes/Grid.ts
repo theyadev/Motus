@@ -21,7 +21,7 @@ export default class Grid {
     this.playerIndex = 0;
     this.finished = false;
     this.currentRound = 0;
-    this.maxRound = 5;
+    this.maxRound = 2;
     this.currentTurn = 0;
     this.time = 0;
 

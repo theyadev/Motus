@@ -1,3 +1,4 @@
+import Difficulty from "../Types/Difficulty";
 import Player from "./Player";
 
 /**
@@ -6,24 +7,27 @@ import Player from "./Player";
  */
 export type Mode = "FFA" | "FFA TEAM" | "BR" | "FFFA";
 
-export type State = "IN GAME" | "MENU";
+export type Status= "PLAYING" | "MENU" | "LEADERBOARD";
 
 export default class Game {
   id: string;
   players: Player[];
   mode: Mode;
-  state: State;
   currentRound: number;
   maxRound: number;
   playTime: number;
+  status: Status;
+  interval: undefined | NodeJS.Timer;
+  difficulty: Difficulty;
 
   constructor(id: string, host: Player) {
     this.id = id;
     this.players = [host];
     this.mode = "FFA";
-    this.state = "MENU";
     this.currentRound = 0;
-    this.maxRound = 5;
+    this.maxRound = 2;
     this.playTime = 60;
+    this.status = "MENU";
+    this.difficulty = "Medium"
   }
 }

@@ -1,5 +1,6 @@
 import Grid from "../../../../packages/Classes/Grid";
 import Game from "../../../../packages/Classes/Game";
+
 import { Server, Socket } from "socket.io";
 
 export default function (
@@ -8,11 +9,11 @@ export default function (
   Games: Map<string, Game>,
   Grids: Map<string, Grid>
 ) {
-  socket.on("UPDATE PLAYERS", (id: string) => {
+  socket.on("GET STATUS", (id: string) => {
     const game = Games.get(id);
 
     if (!game) return;
 
-    io.sockets.in(game.id).emit("PLAYERS", game.players);
+    socket.emit("STATUS", game.status);
   });
 }

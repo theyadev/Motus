@@ -1,4 +1,6 @@
 export default function normalize(str: string) {
-    // TODO: enlever accents
-    return str.toLowerCase()
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
 }
