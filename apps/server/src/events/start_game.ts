@@ -19,21 +19,21 @@ export default function (
 
     switch (game.mode) {
       case "FFFA":
-        word = getRandomWord();
+        word = getRandomWord(game.difficulty);
 
         for (const player of game.players) {
           const id = "grid:" + generateSeed(Grids);
-          Grids.set(id, new Grid(id, game.id, word));
+          Grids.set(id, new Grid(id, game.id, word, game.maxRound, game.difficulty));
 
           player.gridId = id;
         }
 
         break;
       case "FFA":
-        word = getRandomWord();
+        word = getRandomWord(game.difficulty);
 
         const id = "grid:" + generateSeed(Grids);
-        Grids.set(id, new Grid(id, game.id, word));
+        Grids.set(id, new Grid(id, game.id, word, game.maxRound, game.difficulty));
 
         for (const player of game.players) {
           player.gridId = id;
@@ -75,11 +75,12 @@ export default function (
 
       if (!grid) continue;
 
-      const players = game.players.filter((p) => p.gridId == grid.id);
-
+      
       game.interval = setInterval(() => {
+        const players = game.players.filter((p) => p.gridId == grid.id);
+        
         if (grid.time > 10) {
-          grid.nextTurn(players.length - 1);
+          grid.nextTurn(players.length);
           grid.time = 0;
         }
 
