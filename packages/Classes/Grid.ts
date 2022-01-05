@@ -1,10 +1,12 @@
 import { getRandomWord } from "../Functions/words";
 import Answer from "../Types/Answer";
+import Difficulty from "../Types/Difficulty";
 export default class Grid {
   id: string;
   roomId: string;
   currentRound: number;
   maxRound: number;
+  difficulty: Difficulty;
   answers: Answer[];
   wordToFind: string;
   closestWord?: Answer;
@@ -13,7 +15,7 @@ export default class Grid {
   currentTurn: number;
   time: number;
 
-  constructor(id: string, roomId: string, wordToFind: string) {
+  constructor(id: string, roomId: string, wordToFind: string, maxRound: number, difficulty: Difficulty) {
     this.id = id;
     this.roomId = roomId;
     this.answers = [];
@@ -21,7 +23,8 @@ export default class Grid {
     this.playerIndex = 0;
     this.finished = false;
     this.currentRound = 0;
-    this.maxRound = 2;
+    this.maxRound = maxRound;
+    this.difficulty = difficulty
     this.currentTurn = 0;
     this.time = 0;
 
@@ -40,6 +43,13 @@ export default class Grid {
         classe: "wrongLetter",
       });
     }
+
+    for (let i = 0; i < 2; i++) {
+      let index = Math.floor(Math.random()*this.closestWord.letters.length)
+
+      this.closestWord.letters[index].char = this.wordToFind[index]
+    }
+    
   }
 
   // TODO: Trouver un meilleur nom !!!!!!!!!!
@@ -55,7 +65,7 @@ export default class Grid {
   }
 
   nextTurn(length: number) {
-    if (this.currentTurn < length) {
+    if (this.currentTurn < length - 1) {
       this.currentTurn++;
     } else {
       this.currentTurn = 0;
@@ -63,7 +73,7 @@ export default class Grid {
   }
 
   reset() {
-    this.wordToFind = getRandomWord();
+    this.wordToFind = getRandomWord(this.difficulty);
     this.answers = [];
     this.finished = false;
     this.currentTurn = 0;
