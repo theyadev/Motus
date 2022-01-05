@@ -14,6 +14,8 @@ export default function (
 
     if (!game) return socket.emit("JOIN", false);
 
+    if (game.status != "MENU") return socket.emit("JOIN", false);
+
     const player = new Player(username, socket.id);
 
     let res = false;
