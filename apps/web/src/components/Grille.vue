@@ -37,6 +37,10 @@ getGridData(gridId.value, (grid) => {
   playerTurn.value = grid.currentTurn;
   closestWord.value = grid.closestWord;
   currentPlayerTurn.value = players.value[grid.currentTurn];
+  
+  if (currentPlayerTurn.value.username == player.value?.username){
+    document.getElementById("inputAnswer")?.focus()
+  }
 
   time.value = 10 - grid.time + 1;
 
@@ -92,6 +96,7 @@ function convertTime(time: number) {
           class="py-2"
         >
           <input
+            id="inputAnswer"
             placeholder="Tapez votre réponse ici"
             class="mt-2 px-4 py-1"
             v-model="answer"
