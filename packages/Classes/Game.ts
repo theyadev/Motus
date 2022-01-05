@@ -25,7 +25,7 @@ export default class Game {
     this.players = [host];
     this.mode = "FFA";
     this.currentRound = 0;
-    this.maxRound = 2;
+    this.maxRound = 5;
     this.playTime = 60;
     this.status = "MENU";
     this.difficulty = "Medium"
