@@ -91,7 +91,7 @@ export default function (
 
     if (!isInDictionary(answer)) return
 
-    grid.nextTurn(players.length - 1);
+    grid.nextTurn(players.length);
 
     grid.answers.push(generateAnswer(grid.wordToFind, answer));
 
