@@ -2,6 +2,7 @@ import Grid from "../../../../packages/Classes/Grid";
 import Game from "../../../../packages/Classes/Game";
 
 import { Server, Socket } from "socket.io";
+import disconnect from "../functions/disconnect";
 
 export default function (
   io: Server,
@@ -16,12 +17,9 @@ export default function (
       for (let i = 0; i < Game.players.length; i++) {
         if (Game.players[i].socketId != socket.id) continue;
 
-        const player = Game.players.splice(i, 1);
+        const removedPlayer = Game.players.splice(i, 1)[0];
 
-        socket.leave(id)
-        if (player[0].gridId) socket.leave(player[0].gridId)
-
-        io.sockets.in(id).emit("PLAYERS", Game.players);
+        disconnect(removedPlayer, i, Grids, Game, io, socket);
       }
     }
   });
