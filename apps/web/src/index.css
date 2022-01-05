@@ -4,7 +4,7 @@
 
 @layer utilities {
   .letter {
-    @apply w-20 h-20  flex items-center border-white border border-opacity-50 justify-center text-7xl text-white shadow uppercase;
+    @apply aspect-square w-full lg:w-20 lg:h-20 lg:text-7xl flex items-center border-white border border-opacity-50 justify-center  text-white shadow uppercase;
   }
 }
 
@@ -21,5 +21,5 @@
 }
 
 .nearLetter .circle {
-  @apply rounded-full bg-gradient-to-t from-yellow-500 to-yellow-300  w-[4.5rem] h-[4.5rem] flex items-center justify-center;
+  @apply rounded-full bg-gradient-to-t from-yellow-500 to-yellow-300  w-[95%] h-[95%] flex items-center justify-center;
 }
