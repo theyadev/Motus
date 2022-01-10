@@ -74,7 +74,6 @@ function convertTime(time: number) {
 </script>
 
 <template>
-  <transition name="fade" class="flex">
     <div class="flex flex-col">
       <div class="flex flex-col ring-2 ring-white">
         <div v-for="row in maxRows" :key="row" class="flex">
@@ -108,17 +107,4 @@ function convertTime(time: number) {
         <div class="bg-blue-600 px-4 py-1 text-xl text-white">{{ convertTime(time) }}</div>
       </div>
     </div>
-  </transition>
 </template>
-
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>
