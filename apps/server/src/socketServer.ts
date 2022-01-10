@@ -3,6 +3,8 @@ import { join } from "path";
 import { Socket, Server as socketioServer } from "socket.io";
 import { Server as httpServer } from "http";
 
+const DEBUG: boolean = true;
+
 interface Modules extends Object {
   [key: string]: Function;
 }
@@ -53,6 +55,12 @@ export default class socketServer {
       throw new Error("Modules import failed or there are no modules.");
 
     this.io.on("connection", (socket: Socket) => {
+      if (DEBUG === true) {
+        socket.onAny((eventName, ...args) => {
+          console.log(eventName, args);
+        });
+      }
+
       for (const module in modules) {
         modules[module](this.io, socket, ...args);
       }

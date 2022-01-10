@@ -10,6 +10,24 @@ export default function (
   Games: Map<string, Game>,
   Grids: Map<string, Grid>
 ) {
+  socket.on("UPDATE ROUND", function (round: number, id: string) {
+    const game = Games.get(id);
+
+    if (!game) return;
+
+    game.maxRound = round;
+
+    io.sockets.in(id).emit("ROUND", round);
+  });
+
+  socket.on("UPDATE PLAYERS", (id: string) => {
+    const game = Games.get(id);
+
+    if (!game) return;
+
+    io.sockets.in(game.id).emit("PLAYERS", game.players);
+  });
+
   socket.on("UPDATE DIFFICULTY", function (difficulty: Difficulty, id: string) {
     const game = Games.get(id);
 
