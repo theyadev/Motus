@@ -1,7 +1,6 @@
 import { generateSeed } from "../../../../packages/Functions/utils";
 import Grid from "../../../../packages/Classes/Grid";
 import Game from "../../../../packages/Classes/Game";
-import Player from "../../../../packages/Classes/Player";
 import { Server, Socket } from "socket.io";
 
 export default function (
@@ -10,17 +9,13 @@ export default function (
   Games: Map<string, Game>,
   Grids: Map<string, Grid>
 ) {
-  socket.on("CREATE GAME", function (username: string) {
+  socket.on("CREATE GAME", function () {
     const id = "game:" + generateSeed(Games);
 
-    const player = new Player(username, socket.id, true);
-    const game = new Game(id, player);
+    const game = new Game(id);
 
     Games.set(id, game);
 
-    socket.emit("CREATE", id, player);
-    socket.emit("STATUS", game.status)
-
-    socket.join(id);
+    socket.emit("CREATED", id)
   });
 }

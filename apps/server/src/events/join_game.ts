@@ -16,7 +16,11 @@ export default function (
 
     if (game.status != "MENU") return socket.emit("JOIN", false);
 
-    const player = new Player(username, socket.id);
+    let host = false
+
+    if (game.players.length === 0) host = true
+    
+    const player = new Player(username, socket.id, host);
 
     let res = false;
 

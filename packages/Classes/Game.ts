@@ -20,9 +20,9 @@ export default class Game {
   interval: undefined | NodeJS.Timer;
   difficulty: Difficulty;
 
-  constructor(id: string, host: Player) {
+  constructor(id: string) {
     this.id = id;
-    this.players = [host];
+    this.players = [];
     this.mode = "FFA";
     this.currentRound = 0;
     this.maxRound = 5;

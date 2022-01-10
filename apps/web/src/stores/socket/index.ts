@@ -1,6 +1,5 @@
 import { io } from "socket.io-client";
 
-import createGame from "./functions/createGame";
 import doesGameExist from "./functions/doesGameExist";
 import getGridData from "./functions/getGridData";
 import joinGame from "./functions/joinGame";
@@ -23,7 +22,6 @@ export const socket = io(serverUrl, {
 
 export default function useSocket() {
   return {
-    createGame,
     doesGameExist,
     joinGame,
     getGridData,
